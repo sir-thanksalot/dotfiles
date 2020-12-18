@@ -1,0 +1,11 @@
+## LS ##
+alias ls="ls --color=auto"
+alias ll="ls -la"
+
+## cd everywhere ##
+alias cd..="cd .."
+alias ..="cd .."
+
+# For local changes
+# MUST be last line
+[ -f .aliases.local ] && source .aliases.local

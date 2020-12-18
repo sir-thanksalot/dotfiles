@@ -1,0 +1,11 @@
+export PATH="$HOME/bin:$PATH"
+
+# default editor
+export VISUAL="vim"
+export EDITOR="$VISUAL"
+
+
+
+# For local changes
+# MUST be last line
+[ -f .exports.local ] && source .exports.local
