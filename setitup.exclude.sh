@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-apt install git -y
-git clone https://github.com/sir-thanksalot/setitup.git
-mv ./setitup ./.setitup
-echo "Next Steps: execute .setitup/bootstrap.exclude.sh"
+#install git and clone this repo, then move it to .setitup
+if [ ! ./.setitup ] ; then
+    apt install git -y
+    git clone https://github.com/sir-thanksalot/setitup.git
+    mv ./setitup ./.setitup
+    echo "Next Step:"
+    echo "sudo .setitup/bootstrap.exclude.sh"
+else 
+    echo "Already Installed!"
+fi
