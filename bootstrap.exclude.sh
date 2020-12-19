@@ -29,18 +29,18 @@ create_dirs() {
 	echo "$PROMPT Create 'projects' and 'playground' directorys? (y/n)"
 	read resp
 	if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
-		mkdir -p "$PATH_TO_PROJECTS"
-		mkdir -p "$PATH_TO_PLAYGROUND"
+		sudo -u $real_user mkdir -p "$PATH_TO_PROJECTS"
+		sudo -u $real_user mkdir -p "$PATH_TO_PLAYGROUND"
 	fi
 
 	echo "$PROMPT Create 'bin' directory? (y/n)"
 	read resp
 	if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
-		mkdir -p "$PATH_TO_USER_BIN"
+		sudo -u $real_user mkdir -p "$PATH_TO_USER_BIN"
 	fi
 
 	echo "$PROMPT Creating $PATH_TO_REPLACED_DOTFILES"
-	mkdir -p "$PATH_TO_REPLACED_DOTFILES"
+	sudo -u $real_user mkdir -p "$PATH_TO_REPLACED_DOTFILES"
 }
 
 link () {
@@ -51,7 +51,7 @@ link () {
 	if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
 		for file in $( ls -A $scriptpath | grep -vE '\.exclude*|\.git$|\.gitignore|.*.md|\.vscode' ) ; do
 			[ -f "$homedir/$file" ] && mv "$homedir/$file" "$PATH_TO_REPLACED_DOTFILES" 
-			ln -sv "$scriptpath/$file" "$homedir"
+			sudo -u $real_user ln -sv "$scriptpath/$file" "$homedir"
 		done
 		echo "$PROMPT Symlinking is done! :)"
 	else
