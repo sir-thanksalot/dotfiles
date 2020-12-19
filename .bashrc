@@ -32,6 +32,11 @@ if [ -d "$HOME/.nvm" ] ; then
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 fi
 
+# golang
+if [ -d "$HOME/bin/go" ] ; then 
+  export PATH=$PATH:/usr/local/go/bin
+fi
+
 
 # For local changes
 # Don't make edits below this
