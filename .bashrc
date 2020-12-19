@@ -26,6 +26,13 @@ shopt -s checkwinsize
 # styling the prompt
 export PS1="\u@\h \[\e[32m\]\w \[\033[00m\]\$(git_prompt)$ "
 
+# nvm
+if [ -d "$HOME/.nvm" ] ; then 
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+fi
+
+
 # For local changes
 # Don't make edits below this
 [ -f .bashrc.local ] && source .bashrc.local
