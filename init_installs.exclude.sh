@@ -13,6 +13,8 @@ apt upgrade -y
 apt install git -y
 # Vim
 apt install vim -y
+#cURL
+apt install curl -y
 
 
 
