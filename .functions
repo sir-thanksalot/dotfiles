@@ -72,4 +72,4 @@ git_prompt() {
 
 # For local changes
 # MUST be last line
-[ -f .exports.local ] && source .exports.local
+[ -f .functions.local ] && source .functions.local

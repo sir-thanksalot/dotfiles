@@ -1,9 +1,8 @@
-export PATH="$HOME/bin:$PATH"
+[ -d bin ] && export PATH="$HOME/bin:$PATH"
 
 # default editor
 export VISUAL="vim"
 export EDITOR="$VISUAL"
-
 
 
 # For local changes

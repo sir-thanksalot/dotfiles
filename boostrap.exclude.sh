@@ -22,28 +22,35 @@ init () {
 	PATH_TO_PLAYGROUND="$homedir/playground"
 	PATH_TO_PROJECTS="$homedir/projects"
 	PATH_TO_USER_BIN="$homedir/bin"
-	PATH_TO_DELETE_LATER="$homedir/.delete_later"
+	PATH_TO_REPLACED_DOTFILES="$homedir/.replaces_dotfiles"
 }
 
 create_dirs() {
-	echo "$PROMPT Making a projects folder in $PATH_TO_PROJECTS if it doesn't already exist..."
-	mkdir -p "$PATH_TO_PROJECTS"
-	echo "$PROMPT Making a playground folder in $PATH_TO_PLAYGROUND if it doesn't already exist..."
-	mkdir -p "$PATH_TO_PLAYGROUND"
-	echo "$PROMPT Making a bin folder in $PATH_TO_USER_BIN if it doesn't already exist..."
-	mkdir -p "$PATH_TO_USER_BIN"
-	echo "$PROMPT Making a bin folder in $PATH_TO_DELETE_LATER if it doesn't already exist..."
-	mkdir -p "$PATH_TO_DELETE_LATER"
+	echo "$PROMPT Create 'projects' and 'playground' directorys? (y/n)"
+	read resp
+	if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
+		mkdir -p "$PATH_TO_PROJECTS"
+		mkdir -p "$PATH_TO_PLAYGROUND"
+	fi
+
+	echo "$PROMPT Create 'bin' directory? (y/n)"
+	read resp
+	if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
+		mkdir -p "$PATH_TO_USER_BIN"
+	fi
+
+	echo "$PROMPT Creating $PATH_TO_REPLACED_DOTFILES"
+	mkdir -p "$PATH_TO_REPLACED_DOTFILES"
 }
 
 link () {
 	echo "$PROMPT I want to symlink the files in this repo to the home directory."
-	echo "$PROMPT All files that already exist there will be moved to ~/.delete_later"
+	echo "$PROMPT All files that already exist there will be moved to $PATH_TO_REPLACED_DOTFILES"
 	echo "$PROMPT Okay? (y/n)"
 	read resp
 	if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
 		for file in $( ls -A $scriptpath | grep -vE '\.exclude*|\.git$|\.gitignore|.*.md|\.vscode' ) ; do
-			[ -f "$homedir/$file" ] && mv "$homedir/$file" "$PATH_TO_DELETE_LATER" 
+			[ -f "$homedir/$file" ] && mv "$homedir/$file" "$PATH_TO_REPLACED_DOTFILES" 
 			ln -sv "$scriptpath/$file" "$homedir"
 		done
 		echo "$PROMPT Symlinking is done! :)"
@@ -60,7 +67,7 @@ install_tools () {
 		read resp
 		if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
 			echo "$PROMPT First lets install the basics..."
-			sh "$scriptpath/init_installs.debian.exclude.sh"
+			sh "$scriptpath/init_installs.exclude.sh"
 		else
 			echo "$PROMPT Okay, but don't complain later.. "
 		fi
