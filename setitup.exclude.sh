@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #install git and clone this repo, then move it to .setitup
-if [ ! ./.dotfiles ] ; then
+if [ ! -d ./.dotfiles ] ; then
     apt install git -y
     git clone https://github.com/sir-thanksalot/dotfiles.git
     mv ./dotfiles ./.dotfiles
