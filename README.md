@@ -1,4 +1,4 @@
-# Setitup
+# .dotfiles
 
 **WARNING**: This is meant to be used be me. Feel free to try it out or fork it, but dont complain later.. 
 
@@ -6,7 +6,7 @@
 
 Download and run the install script, then run the script:
 ```bash
-wget -O - https://raw.githubusercontent.com/sir-thanksalot/dotfiles/main/setitup.exclude.sh | sudo bash
+wget -O - https://raw.githubusercontent.com/sir-thanksalot/dotfiles/main/setitup.exclude.sh | bash
 sudo .dotfiles/bootstrap.exclude.sh
 ```
 
