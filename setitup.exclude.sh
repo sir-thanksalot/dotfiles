@@ -6,7 +6,7 @@ if [ ! -d ./.dotfiles ] ; then
     git clone https://github.com/sir-thanksalot/dotfiles.git
     mv ./dotfiles ./.dotfiles
     echo "Next Step:"
-    echo "sudo .setitup/bootstrap.exclude.sh"
+    echo "sudo .dotfiles/bootstrap.exclude.sh"
 else 
     echo "Already Installed!"
 fi
