@@ -70,16 +70,7 @@ install_tools () {
 		read resp
 		if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
 			\. "$scriptpath/install_basics.exclude.sh"
-		else
-			echo "$PROMPT Okay, but maybe some of the next steps wont work then.."
 		fi
-
-		echo "$PROMPT Set up NVM? (y/n)"
-		read resp
-		if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
-			sudo -u $real_user \. "$scriptpath/install_nvm.exclude.sh"
-		fi
-
 	else
 		echo "$PROMPT I'm not on Linux (Debian), so I can't install... :("
 	fi
