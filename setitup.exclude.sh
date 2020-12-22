@@ -4,7 +4,7 @@
 if [ ! ./.setitup ] ; then
     apt install git -y
     git clone https://github.com/sir-thanksalot/setitup.git
-    mv ./setitup ./.setitup
+    mv ./dotfiles ./.dotfiles
     echo "Next Step:"
     echo "sudo .setitup/bootstrap.exclude.sh"
 else 

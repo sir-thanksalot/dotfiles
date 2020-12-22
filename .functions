@@ -71,19 +71,75 @@ git_prompt() {
 }
 
 install_nvm() {
-    [ ! -d "$HOME/.nvm" ] && export NVM_DIR="$HOME/.nvm" && (
+    if [ ! -d "$HOME/.nvm" ] ; then
+        export NVM_DIR="$HOME/.nvm" && (
         git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
         cd "$NVM_DIR"
         git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
     ) && \. "$NVM_DIR/nvm.sh"
+    else 
+        echo "nvm already installed. Version $(nvm --version)"
+    fi
 }
 
 update_nvm() {
-    (
-        cd "$NVM_DIR"
-        git fetch --tags origin
-        git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
-    ) && \. "$NVM_DIR/nvm.sh"
+    if [ -d "$HOME/.nvm" ] ; then
+        echo "Trying to update nvm version $(nvm --version)..."
+        (
+            cd "$NVM_DIR"
+            git fetch --tags origin
+            git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
+        ) && \. "$NVM_DIR/nvm.sh"
+        echo "Now at version $(nvm --version)"
+    fi
+}
+
+install_golang() {
+    goroot="$HOME/.go"
+    gopath="$HOME/go"
+    os="$(uname -s)"
+    arch="$(uname -m)"
+    case $os in
+        "Linux")
+            case $arch in
+            "x86_64")
+                arch=amd64
+                ;;
+            "aarch64")
+                arch=arm64
+                ;;
+            "armv6")
+                arch=armv6l
+                ;;
+            "armv8")
+                arch=arm64
+                ;;
+            .*386.*)
+                arch=386
+                ;;
+            esac
+            platform="linux-$arch"
+        ;;
+    esac
+
+    if [ -z "$platform" ]; then
+        echo "Unknown OS/Architecture."
+        return 1
+    fi
+    version=$(wget -qO- "https://golang.org/VERSION?m=text")
+    package_name="$version.$platform.tar.gz"
+    temp_dir=$(mktemp -d)
+    wget https://storage.googleapis.com/golang/$package_name -O "$temp_dir/go.tar.gz"
+    if [ $? -ne 0 ]; then
+        echo "Download failed! Exiting."
+        return 1
+    fi
+    mkdir -p "$goroot"
+    tar -C "$goroot" --strip-components=1 -xzf "$temp_dir/go.tar.gz"
+    mkdir -p "${gopath}/"{src,pkg,bin}
+    rm -f "$temp_dir/go.tar.gz"
+    echo "sucessfully golang version $version installed. Sourcing profile now"
+    . $HOME/.bash_profile
 }
 
 # For local changes

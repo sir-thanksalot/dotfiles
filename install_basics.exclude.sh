@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-PROMPT='[apt-install]'
-
-echo "$PROMPT I hope you trust me enough to run me as root! :)"
 
 # Update apt
 apt update -y
@@ -15,8 +12,8 @@ apt install git -y
 apt install vim -y
 #cURL
 apt install curl -y
-
-
+#htop
+apt install htop -y
 
 # Cleanup
 apt clean

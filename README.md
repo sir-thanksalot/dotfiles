@@ -6,7 +6,7 @@
 
 Download and run the install script, then run the script:
 ```bash
-wget -O - https://raw.githubusercontent.com/sir-thanksalot/setitup/main/setitup.exclude.sh | sudo bash
+wget -O - https://raw.githubusercontent.com/sir-thanksalot/dotfiles/main/setitup.exclude.sh | sudo bash
 sudo .setitup/bootstrap.exclude.sh
 ```
 

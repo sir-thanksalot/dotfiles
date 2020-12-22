@@ -14,15 +14,15 @@ init () {
 	else
 		real_user=$(whoami)
 	fi
-	homedir=$( getent passwd $real_user | cut -d: -f6 )
+	real_home=$( getent passwd $real_user | cut -d: -f6 )
 
 	# ref: https://stackoverflow.com/a/4774063
 	scriptpath="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
-	PATH_TO_PLAYGROUND="$homedir/playground"
-	PATH_TO_PROJECTS="$homedir/projects"
-	PATH_TO_USER_BIN="$homedir/bin"
-	PATH_TO_REPLACED_DOTFILES="$homedir/.replaces_dotfiles"
+	PATH_TO_PLAYGROUND="$real_home/playground"
+	PATH_TO_PROJECTS="$real_home/projects"
+	PATH_TO_USER_BIN="$real_home/bin"
+	PATH_TO_REPLACED_DOTFILES="$real_home/.replaced_dotfiles"
 }
 
 create_dirs() {
@@ -50,8 +50,8 @@ link () {
 	read resp
 	if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
 		for file in $( ls -A $scriptpath | grep -vE '\.exclude*|\.git$|\.gitignore|.*.md|\.vscode' ) ; do
-			[ -f "$homedir/$file" ] && mv "$homedir/$file" "$PATH_TO_REPLACED_DOTFILES" 
-			sudo -u $real_user ln -sv "$scriptpath/$file" "$homedir"
+			[ -f "$real_home/$file" ] && mv "$real_home/$file" "$PATH_TO_REPLACED_DOTFILES" 
+			sudo -u $real_user ln -sv "$scriptpath/$file" "$real_home"
 		done
 		echo "$PROMPT Symlinking is done! :)"
 	else
@@ -62,17 +62,26 @@ link () {
 
 install_tools () {
 	if [ $( echo "$OSTYPE" | grep 'linux-gnu' ) ] ; then
-		echo "$PROMPT Now I want to install some useful stuff (for now only with apt on debian, sorry..)"
-		echo "$PROMPT So i assume you're fine with that? (y/n)"
+		# basic setup
+		# source install functions
+		source "$scriptpath/installs.exclude.sh"
+		echo "$PROMPT Now I want to install some useful stuff (for now only with apt on debian, sorry..).?"
+		echo "$PROMPT First some basics, okay? (y/n)"
 		read resp
 		if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
-			echo "$PROMPT First lets install the basics..."
-			sh "$scriptpath/init_installs.exclude.sh"
+			\. "$scriptpath/install_basics.exclude.sh"
 		else
-			echo "$PROMPT Okay, but don't complain later.. "
+			echo "$PROMPT Okay, but maybe some of the next steps wont work then.."
 		fi
+
+		echo "$PROMPT Set up NVM? (y/n)"
+		read resp
+		if [ "$resp" = 'y' -o "$resp" = 'Y' ] ; then
+			sudo -u $real_user \. "$scriptpath/install_nvm.exclude.sh"
+		fi
+
 	else
-		echo "$PROMPT I'm not on Linux (Debian), so I can't install all the cool stuff... :("
+		echo "$PROMPT I'm not on Linux (Debian), so I can't install... :("
 	fi
 }
 
@@ -80,3 +89,5 @@ init
 create_dirs
 link
 install_tools
+
+source "$real_home/.bash_profile"
